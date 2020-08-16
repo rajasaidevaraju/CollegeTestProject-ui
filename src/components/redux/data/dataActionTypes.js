@@ -1,0 +1,15 @@
+export const REQUEST_DATA = "REQUEST_DATA";
+export const REQUEST_SUCCESS = "REQUEST_SUCCESS";
+export const REQUEST_FAILURE = "REQUEST_FAILURE";
+export const TEST_NAME = "TEST_NAME";
+export const ADD_QUESTION = "ADD_QUESTION";
+export const EDIT_QUESTION = "EDIT_QUESTION";
+export const REMOVE_QUESTION = "REMOVE_QUESTION";
+export const ADD_OPTION = "ADD_OPTION";
+export const EDIT_OPTION = "EDIT_OPTION";
+export const REMOVE_OPTION = "REMOVE_OPTION";
+export const CHANGE_TYPE = "CHANGE_TYPE";
+export const ADD_TEST = "ADD_TEST";
+export const DELETE_TEST = "DELETE_TEST";
+export const ADD_ANSWER = "ADD_ANSWER";
+export const REMOVE_ANSWER = "REMOVE_ANSWER";
