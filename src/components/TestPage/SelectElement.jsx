@@ -6,7 +6,12 @@ const useStyles = makeStyles((theme) => ({
   SelectElement: {
     marginTop: theme.spacing(2),
     marginBottom: theme.spacing(2),
-    marginLeft: theme.spacing(5),
+    [theme.breakpoints.up("sm")]: {
+      marginLeft: theme.spacing(5),
+    },
+    [theme.breakpoints.down("sm")]: {
+      marginLeft: theme.spacing(2),
+    },
   },
 }));
 

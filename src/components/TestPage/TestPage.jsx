@@ -1,14 +1,22 @@
 import React, { useEffect, useState } from "react";
 import "./TestPage.css";
 import { useDispatch, useSelector } from "react-redux";
-import { save_test } from "./../redux/data/dataActions";
+import { save_test, delete_test } from "./../redux/data/dataActions";
 import Question from "./Question";
 import Option from "./Option";
 import SelectElement from "./SelectElement";
+import FeatureButtons from "./FeatureButtons";
 import { fetchData } from "../redux/data/dataActions";
 import { useMediaQuery, Divider } from "@material-ui/core";
 import generateID from "./../../utils/generateID";
-import { Paper, Typography, Button } from "@material-ui/core";
+import {
+  Paper,
+  Typography,
+  Button,
+  Dialog,
+  DialogTitle,
+  DialogActions,
+} from "@material-ui/core";
 const TestPage = (props) => {
   const id = props.match.params.id;
   let testData = null;
@@ -19,6 +27,7 @@ const TestPage = (props) => {
   const role = useSelector((state) => state.auth.user.role);
   const [questions, setQuestions] = useState({});
   const [testName, setTestName] = useState("");
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     if (loading) {
@@ -100,6 +109,16 @@ const TestPage = (props) => {
     delete questions[question_id].options[option_id];
     setQuestions({ ...questions });
   };
+  const deleteTest = () => {
+    setOpen(true);
+  };
+
+  const handleClose = (shouldDelete) => {
+    if (shouldDelete) {
+      dispatch(delete_test(id));
+    }
+    setOpen(false);
+  };
 
   let loading = useSelector((state) => state.data.loading);
   const mobile = useMediaQuery("(max-width:600px)");
@@ -111,6 +130,35 @@ const TestPage = (props) => {
   if (!loading && testDetails !== undefined) {
     return (
       <div className="test">
+        <Dialog
+          open={open}
+          onClose={() => {
+            handleClose(false);
+          }}
+          aria-labelledby="form-dialog-title"
+        >
+          <DialogTitle id="alert-dialog-title">
+            {"Do you want to delete the Test?"}
+          </DialogTitle>
+          <DialogActions>
+            <Button
+              onClick={() => {
+                handleClose(false);
+              }}
+              color="secondary"
+            >
+              No
+            </Button>
+            <Button
+              onClick={() => {
+                handleClose(true);
+              }}
+              color="secondary"
+            >
+              Yes
+            </Button>
+          </DialogActions>
+        </Dialog>
         <Paper className="paper">
           <Typography variant={variant}>Test Page of {testName}</Typography>
           {Object.keys(questions).map((key, i) => {
@@ -126,7 +174,6 @@ const TestPage = (props) => {
                   setQuestionType={setQuestionType}
                   i={i}
                 ></Question>
-
                 {questions[key].options &&
                   Object.keys(questions[key].options).map((optionKey, j) => {
                     return (
@@ -154,30 +201,12 @@ const TestPage = (props) => {
               </div>
             );
           })}
-          {(role === "admin" || role === "educator") && (
-            <div className="button_div">
-              <Button
-                className="test_Button"
-                variant="contained"
-                color="secondary"
-                onClick={() => {
-                  createQuestion();
-                }}
-              >
-                add Question
-              </Button>
-              <Button
-                className="test_Button"
-                variant="contained"
-                color="secondary"
-                onClick={() => {
-                  saveTest();
-                }}
-              >
-                Save Test
-              </Button>
-            </div>
-          )}
+          <FeatureButtons
+            createQuestion={createQuestion}
+            saveTest={saveTest}
+            deleteTest={deleteTest}
+            role={role}
+          ></FeatureButtons>
         </Paper>
       </div>
     );

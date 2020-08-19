@@ -4,7 +4,7 @@ import {
   REQUEST_FAILURE,
   ADD_TEST,
   SAVE_TEST,
-  SAVE_TEST_SUCCESS,
+  DELETE_TEST,
 } from "./dataActionTypes";
 const initialState = {
   loading: true,
@@ -58,8 +58,14 @@ const dataReducer = (state = initialState, action) => {
       state = Object.assign({}, state);
       return {
         ...state,
+        status: "success",
+        loading: false,
       };
-    case SAVE_TEST_SUCCESS:
+
+    case DELETE_TEST:
+      const delete_id = action.payload._id;
+      delete state.testsData[delete_id];
+      state = Object.assign({}, state);
       return {
         ...state,
         status: "success",

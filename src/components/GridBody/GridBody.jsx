@@ -79,7 +79,7 @@ const GridBody = () => {
           margin="dense"
           autoComplete="off"
           id="testName"
-          label="testName"
+          label="test Name"
           type="text"
           value={testName}
           onChange={(e) => setTestName(e.target.value)}

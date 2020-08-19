@@ -3,8 +3,8 @@ import {
   REQUEST_SUCCESS,
   REQUEST_FAILURE,
   ADD_TEST,
+  DELETE_TEST,
   SAVE_TEST,
-  SAVE_TEST_SUCCESS,
 } from "./dataActionTypes";
 
 import axios from "axios";
@@ -44,7 +44,7 @@ export const save_test = (test_id, questions, testName) => {
   return (dispatch) => {
     dispatch(request_data());
     const data = { testName: testName, _id: test_id, questions: questions };
-    dispatch(save_test_redux(data));
+
     axios
       .post("/test/saveTest", {
         _id: test_id,
@@ -52,7 +52,7 @@ export const save_test = (test_id, questions, testName) => {
         testName: testName,
       })
       .then((response) => {
-        dispatch(save_test_success());
+        dispatch(save_test_redux(data));
       })
       .catch((error) => {
         dispatch(request_failure(error.message));
@@ -60,23 +60,44 @@ export const save_test = (test_id, questions, testName) => {
   };
 };
 
+export const delete_test = (test_id) => {
+  return (dispatch) => {
+    dispatch(request_data());
+    const data = { _id: test_id };
+
+    axios
+      .post("/test/deleteTest", {
+        _id: test_id,
+      })
+      .then((response) => {
+        dispatch(delete_test_redux(data));
+      })
+      .catch((error) => {
+        dispatch(request_failure(error.message));
+      });
+  };
+};
+
+const delete_test_redux = (data) => {
+  return {
+    type: DELETE_TEST,
+    payload: data,
+  };
+};
 const save_test_redux = (data) => {
   return {
     type: SAVE_TEST,
     payload: data,
   };
 };
-const save_test_success = () => {
-  return {
-    type: SAVE_TEST_SUCCESS,
-  };
-};
+
 const add_test = (data) => {
   return {
     type: ADD_TEST,
     payload: data,
   };
 };
+
 export const request_data = () => {
   return {
     type: REQUEST_DATA,
