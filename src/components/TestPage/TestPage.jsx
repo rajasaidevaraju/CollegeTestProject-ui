@@ -17,10 +17,9 @@ import {
   DialogTitle,
   DialogActions,
 } from "@material-ui/core";
+let testData = null;
 const TestPage = (props) => {
   const id = props.match.params.id;
-  let testData = null;
-
   const dispatch = useDispatch();
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   let testDetails = useSelector((state) => state.data.testsData[id]);

@@ -1,5 +1,5 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useSelector, ReactReduxContext } from "react-redux";
 import { IconButton, InputAdornment } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { Typography, TextField, makeStyles } from "@material-ui/core";
@@ -67,4 +67,4 @@ const Option = ({
   );
 };
 
-export default Option;
+export default React.memo(Option);
