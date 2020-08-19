@@ -73,7 +73,7 @@ const TestPage = (props) => {
     questions[id].questionName = value;
     setQuestions({ ...questions });
   };
-
+  console.log("THIS IS A TEST");
   const selectOption = (type, question_id, option_id, event) => {
     //console.log(event.target.checked);
     //console.log(questions[question_id].answers);
