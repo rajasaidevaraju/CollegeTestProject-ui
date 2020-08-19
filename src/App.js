@@ -4,6 +4,7 @@ import NavBarC from "./components/NavBarC/NavBarC";
 import GridBody from "./components/GridBody/GridBody";
 import Settings from "./components/Settings/Settings";
 import Login from "./components/Login/Login";
+import { green } from "@material-ui/core/colors";
 import Register from "./components/Register/Register";
 import TestPage from "./components/TestPage/TestPage";
 import ProtectedRoute from "./ProtectedRoute";
@@ -29,8 +30,9 @@ const themeObject = (mode) => {
         main: "#ff5722",
       },
       secondary: {
-        light: "#246947",
-        main: "#00e676",
+        light: green[300],
+        main: green[500],
+        dark: green[800],
       },
       type: mode ? "light" : "dark",
     },
@@ -70,7 +72,7 @@ function App() {
             <Route path="/Settings" component={Settings} />
             <Route path="/Login" component={Login} />
             <Route path="/Register" component={Register} />
-            <Route path="/TestPage" component={TestPage} />
+            <Route path="/TestPage/:id" component={TestPage} />
           </Switch>
         </Router>
       </React.Fragment>

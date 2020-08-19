@@ -3,6 +3,8 @@ import {
   REQUEST_SUCCESS,
   REQUEST_FAILURE,
   ADD_TEST,
+  SAVE_TEST,
+  SAVE_TEST_SUCCESS,
 } from "./dataActionTypes";
 const initialState = {
   loading: true,
@@ -16,6 +18,7 @@ const dataReducer = (state = initialState, action) => {
     case REQUEST_DATA:
       return {
         ...state,
+        status: "loading",
         loading: true,
       };
 
@@ -34,7 +37,29 @@ const dataReducer = (state = initialState, action) => {
         error: action.payload,
       };
     case ADD_TEST:
-      //state.testsData[action.payload] = { testData: {}, _id: action.payload };
+      const change = action.payload;
+      let changed = state.testsData;
+      changed = { ...changed, ...change };
+      state = Object.assign({}, state);
+      return {
+        ...state,
+        testsData: changed,
+        status: "success",
+        loading: false,
+      };
+    case SAVE_TEST:
+      const testName = action.payload.testName;
+      const _id = action.payload._id;
+      const questions = action.payload.questions;
+      let original = state.testsData;
+      original[_id].testData.testName = testName;
+      original[_id].testData.questions = questions;
+
+      state = Object.assign({}, state);
+      return {
+        ...state,
+      };
+    case SAVE_TEST_SUCCESS:
       return {
         ...state,
         status: "success",

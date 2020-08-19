@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchData, create_test } from "../redux/data/dataActions";
 import { makeStyles } from "@material-ui/core/styles";
+import generateID from "./../../utils/generateID";
 import {
   Paper,
   Typography,
@@ -31,24 +32,37 @@ const GridBody = () => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [testName, setTestName] = useState("");
+  const testsData = useSelector((state) => state.data.testsData);
+  let loading = useSelector((state) => state.data.loading);
+  const dispatch = useDispatch();
+  const history = useHistory();
   const handleClickOpen = () => {
     setOpen(true);
   };
 
   const handleClose = (testName) => {
     if (testName) {
-      const key = Date.now().toString(36);
+      const key = generateID();
       dispatch(create_test(key, testName));
     }
     setTestName("");
     setOpen(false);
   };
-  const dispatch = useDispatch();
+
   useEffect(() => {
-    dispatch(fetchData());
+    if (loading) {
+      dispatch(fetchData());
+    }
   }, [dispatch]);
-  const testsData = useSelector((state) => state.data.testsData);
-  const history = useHistory();
+
+  const getDate = (date) => {
+    date = new Date(date);
+    return date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear();
+  };
+
+  const openTestPage = (id) => {
+    history.push({ pathname: "/TestPage/" + id });
+  };
 
   return (
     <div className="flex">
@@ -98,9 +112,6 @@ const GridBody = () => {
         onClick={() => {
           handleClickOpen();
         }}
-        /*onClick={() => {
-          history.push("/CreateTest");
-        }}*/
       >
         <Typography variant="h5" key={"addh5"}>
           Create a new Test
@@ -108,9 +119,20 @@ const GridBody = () => {
       </Paper>
       {Object.keys(testsData).map((key) => {
         return (
-          <Paper id={key} key={key} className="quizCard" elevation={3}>
+          <Paper
+            id={key}
+            key={key}
+            className="quizCard"
+            elevation={3}
+            onClick={() => {
+              openTestPage(key);
+            }}
+          >
             <Typography key={key + "h5"} variant="h5">
               {testsData[key].testData.testName}
+            </Typography>
+            <Typography key={key + "p"}>
+              Created at:{getDate(testsData[key].createdAt)}
             </Typography>
           </Paper>
         );

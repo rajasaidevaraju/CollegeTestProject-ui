@@ -15,7 +15,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  cursor: pointer;
 }
 
 .add:hover {
@@ -23,12 +22,13 @@
   color: white;
 }
 
-.add h5 {
-  user-select: none;
-}
-
 .quizCard {
   width: 275px;
   height: 250px;
   margin: 20px;
+  cursor: pointer;
+}
+.add,
+.quizCard h5 {
+  user-select: none;
 }
