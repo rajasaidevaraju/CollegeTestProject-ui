@@ -60,7 +60,7 @@ export const save_test = (test_id, questions, testName) => {
   };
 };
 
-export const delete_test = (test_id) => {
+export const delete_test = (test_id, history) => {
   return (dispatch) => {
     dispatch(request_data());
     const data = { _id: test_id };
@@ -70,6 +70,7 @@ export const delete_test = (test_id) => {
         _id: test_id,
       })
       .then((response) => {
+        history.push("/");
         dispatch(delete_test_redux(data));
       })
       .catch((error) => {

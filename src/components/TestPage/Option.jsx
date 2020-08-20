@@ -1,9 +1,9 @@
-import React from "react";
-import { useSelector, ReactReduxContext } from "react-redux";
+import React, { Component } from "react";
+import { useSelector, connect } from "react-redux";
 import { IconButton, InputAdornment } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
-import { Typography, TextField, makeStyles } from "@material-ui/core";
-const useStyles = makeStyles((theme) => ({
+import { Typography, TextField, withStyles } from "@material-ui/core";
+const styles = (theme) => ({
   option: {
     marginTop: theme.spacing(2),
     marginBottom: theme.spacing(2),
@@ -12,59 +12,69 @@ const useStyles = makeStyles((theme) => ({
     width: "80%",
   },
   optionText: {
-    marginTop: theme.spacing(2),
+    marginTop: theme.spacing(3),
     marginBottom: theme.spacing(2),
     marginLeft: theme.spacing(1),
   },
-}));
-const Option = ({
-  questionKey,
-  optionKey,
-  value,
-  deleteOption,
-  setOptionValue,
-  j,
-}) => {
-  const classes = useStyles();
-  const role = useSelector((state) => state.auth.user.role);
-  if (role !== "admin" && role !== "educator") {
-    return (
-      <Typography
-        variant="body1"
-        display="inline"
-        className={classes.optionText}
-      >
-        {value}
-      </Typography>
+});
+
+class Option extends Component {
+  shouldComponentUpdate(nextProps, nextState) {
+    return !(
+      nextProps.value === this.props.value && this.props.j === nextProps.j
     );
   }
-  return (
-    <TextField
-      className={classes.option}
-      key={optionKey}
-      value={value}
-      multiline={true}
-      InputProps={{
-        startAdornment: (
-          <InputAdornment position="start">
-            {(j + 10).toString(36) + " )"}
-          </InputAdornment>
-        ),
-        endAdornment: (
-          <InputAdornment position="end">
-            <IconButton
-              onClick={() => {
-                deleteOption(questionKey, optionKey);
-              }}
-            >
-              <DeleteIcon key={optionKey + "delete"}></DeleteIcon>
-            </IconButton>
-          </InputAdornment>
-        ),
-      }}
-      onChange={(e) => setOptionValue(e.target.value, questionKey, optionKey)}
-    ></TextField>
-  );
-};
+  render() {
+    const {
+      classes,
+      questionKey,
+      optionKey,
+      value,
+      deleteOption,
+      setOptionValue,
+      j,
+      role,
+    } = this.props;
 
-export default React.memo(Option);
+    if (role !== "admin" && role !== "educator") {
+      return (
+        <Typography
+          variant="body1"
+          display="inline"
+          className={classes.optionText}
+        >
+          {value}
+        </Typography>
+      );
+    }
+    return (
+      <TextField
+        className={classes.option}
+        key={optionKey}
+        value={value}
+        multiline={true}
+        InputProps={{
+          startAdornment: (
+            <InputAdornment position="start">
+              {(j + 10).toString(36) + " )"}
+            </InputAdornment>
+          ),
+          endAdornment: (
+            <InputAdornment position="end">
+              <IconButton
+                onClick={() => {
+                  deleteOption(questionKey, optionKey);
+                }}
+              >
+                <DeleteIcon key={optionKey + "delete"}></DeleteIcon>
+              </IconButton>
+            </InputAdornment>
+          ),
+        }}
+        onChange={(e) => setOptionValue(e.target.value, questionKey, optionKey)}
+      ></TextField>
+    );
+  }
+}
+
+export default withStyles(styles, { withTheme: true })(Option);

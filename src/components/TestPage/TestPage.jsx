@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./TestPage.css";
 import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 import { save_test, delete_test } from "./../redux/data/dataActions";
 import Question from "./Question";
 import Option from "./Option";
@@ -27,7 +28,7 @@ const TestPage = (props) => {
   const [questions, setQuestions] = useState({});
   const [testName, setTestName] = useState("");
   const [open, setOpen] = useState(false);
-
+  const history = useHistory();
   useEffect(() => {
     if (loading) {
       dispatch(fetchData());
@@ -73,19 +74,21 @@ const TestPage = (props) => {
     questions[id].questionName = value;
     setQuestions({ ...questions });
   };
-  console.log("THIS IS A TEST");
+
   const selectOption = (type, question_id, option_id, event) => {
-    //console.log(event.target.checked);
-    //console.log(questions[question_id].answers);
     if (type === "singleOption") {
       questions[question_id].answers = [option_id];
       setQuestions({ ...questions });
     } else {
       if (event.target.checked) {
-        questions[question_id].answers.push(option_id);
+        let newArray = questions[question_id].answers.map((item) => item);
+        newArray.push(option_id);
+        questions[question_id].answers = newArray;
       } else {
-        let index = questions[question_id].answers.indexOf(option_id);
-        questions[question_id].answers.splice(index, 1);
+        const newArray = questions[question_id].answers.filter(
+          (item) => item !== option_id
+        );
+        questions[question_id].answers = newArray;
       }
       setQuestions({ ...questions });
     }
@@ -114,7 +117,7 @@ const TestPage = (props) => {
 
   const handleClose = (shouldDelete) => {
     if (shouldDelete) {
-      dispatch(delete_test(id));
+      dispatch(delete_test(id, history));
     }
     setOpen(false);
   };
@@ -172,6 +175,7 @@ const TestPage = (props) => {
                   deleteQuestion={deleteQuestion}
                   setQuestionType={setQuestionType}
                   i={i}
+                  role={role}
                 ></Question>
                 {questions[key].options &&
                   Object.keys(questions[key].options).map((optionKey, j) => {
@@ -183,6 +187,7 @@ const TestPage = (props) => {
                           optionKey={optionKey}
                           selectOption={selectOption}
                           answersArray={questions[key].answers}
+                          role={role}
                         ></SelectElement>
                         <Option
                           j={j}
@@ -192,6 +197,7 @@ const TestPage = (props) => {
                           value={questions[key].options[optionKey]}
                           deleteOption={deleteOption}
                           setOptionValue={setOptionValue}
+                          role={role}
                         ></Option>
                       </div>
                     );

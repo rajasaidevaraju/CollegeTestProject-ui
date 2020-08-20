@@ -77,6 +77,7 @@ const GridBody = () => {
         <TextField
           color="secondary"
           margin="dense"
+          autoFocus
           autoComplete="off"
           id="testName"
           label="test Name"
