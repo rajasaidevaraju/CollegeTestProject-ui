@@ -1,0 +1,44 @@
+.container {
+  padding: 0;
+  margin: 0;
+  height: 100%;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.formBody {
+  align-items: center;
+  display: flex;
+  flex-flow: column;
+}
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+}
+@media (max-width: 700px) {
+  .textInput {
+    width: 300px;
+  }
+  .formButton {
+    width: 120px;
+    height: 50px;
+  }
+}
+@media (min-width: 700px) {
+  .textInput {
+    width: 500px;
+  }
+  .formButton {
+    width: 200px;
+  }
+}
+.item {
+  margin: 10px !important;
+}

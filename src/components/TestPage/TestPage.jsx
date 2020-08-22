@@ -18,13 +18,15 @@ import {
   DialogTitle,
   DialogActions,
 } from "@material-ui/core";
-let testData = null;
+
 const TestPage = (props) => {
   const id = props.match.params.id;
   const dispatch = useDispatch();
-  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+
   let testDetails = useSelector((state) => state.data.testsData[id]);
   const role = useSelector((state) => state.auth.user.role);
+  let loading = useSelector((state) => state.data.loading);
+  const mobile = useMediaQuery("(max-width:600px)");
   const [questions, setQuestions] = useState({});
   const [testName, setTestName] = useState("");
   const [open, setOpen] = useState(false);
@@ -122,8 +124,6 @@ const TestPage = (props) => {
     setOpen(false);
   };
 
-  let loading = useSelector((state) => state.data.loading);
-  const mobile = useMediaQuery("(max-width:600px)");
   let variant = "h4";
   if (mobile) {
     variant = "h6";

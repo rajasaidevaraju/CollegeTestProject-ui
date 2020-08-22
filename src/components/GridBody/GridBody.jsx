@@ -34,6 +34,7 @@ const GridBody = () => {
   const [testName, setTestName] = useState("");
   const testsData = useSelector((state) => state.data.testsData);
   let loading = useSelector((state) => state.data.loading);
+  const role = useSelector((state) => state.auth.user.role);
   const dispatch = useDispatch();
   const history = useHistory();
   const handleClickOpen = () => {
@@ -105,19 +106,21 @@ const GridBody = () => {
           </Button>
         </DialogActions>
       </Dialog>
-      <Paper
-        id={"add"}
-        key={"add"}
-        className="quizCard add"
-        elevation={3}
-        onClick={() => {
-          handleClickOpen();
-        }}
-      >
-        <Typography variant="h5" key={"addh5"}>
-          Create a new Test
-        </Typography>
-      </Paper>
+      {(role === "admin" || role === "educator") && (
+        <Paper
+          id={"add"}
+          key={"add"}
+          className="quizCard add"
+          elevation={3}
+          onClick={() => {
+            handleClickOpen();
+          }}
+        >
+          <Typography variant="h5" key={"addh5"}>
+            Create a new Test
+          </Typography>
+        </Paper>
+      )}
       {Object.keys(testsData).map((key) => {
         return (
           <Paper

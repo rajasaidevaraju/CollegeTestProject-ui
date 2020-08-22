@@ -2,7 +2,12 @@ import axios from "axios";
 import setAuthToken from "./../../../utils/setAuthToken";
 import jwt_decode from "jwt-decode";
 
-import { GET_ERRORS, SET_CURRENT_USER, USER_LOADING } from "./userActionTypes";
+import {
+  GET_ERRORS,
+  SET_CURRENT_USER,
+  USER_LOADING,
+  CLEAR_ERRORS,
+} from "./userActionTypes";
 
 // Register User
 export const registerUser = (userData, history) => (dispatch) => {
@@ -50,6 +55,11 @@ export const loginUser = (userData, history) => (dispatch) => {
     });
 };
 
+export const clearErrors = () => {
+  return {
+    type: CLEAR_ERRORS,
+  };
+};
 // Set logged in user
 export const setCurrentUser = (decoded) => {
   return {

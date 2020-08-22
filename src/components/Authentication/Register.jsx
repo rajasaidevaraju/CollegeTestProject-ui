@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
@@ -9,10 +9,17 @@ import Grid from "@material-ui/core/Grid";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
 import Typography from "@material-ui/core/Typography";
-import { registerUser } from "./../redux/user/userActions";
+import { registerUser, clearErrors } from "../redux/user/userActions";
 import { useDispatch, useSelector } from "react-redux";
-import "./Register.css";
-
+import "./auth.css";
+function isEmpty(obj) {
+  for (var key in obj) {
+    if (obj.hasOwnProperty(key)) {
+      return false;
+    }
+  }
+  return true;
+}
 export default function SignUp() {
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setInput] = useState({
@@ -26,6 +33,12 @@ export default function SignUp() {
     setInput({ ...formData, [e.target.id]: e.target.value });
   };
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  let errors = useSelector((state) => state.error);
+  useEffect(() => {
+    if (!isEmpty(errors)) {
+      dispatch(clearErrors());
+    }
+  }, []);
   const history = useHistory();
   if (isAuthenticated) {
     history.push("/");
@@ -34,13 +47,15 @@ export default function SignUp() {
 
   return (
     <div className="container">
-      <Grid container direction="column" alignItems="center" spacing={2}>
-        <Grid item>
+      <Grid container direction="column" alignItems="center">
+        <Grid item className="item">
           <Typography variant="h4">Create Account</Typography>
         </Grid>
-        <Grid item>
+        <Grid item className="item">
           <TextField
-            className="input"
+            error={"name" in errors}
+            helperText={"name" in errors && errors.name}
+            className="textInput"
             color="secondary"
             variant="outlined"
             label="Name"
@@ -49,9 +64,11 @@ export default function SignUp() {
             onChange={(e) => handleChange(e)}
           ></TextField>
         </Grid>
-        <Grid item>
+        <Grid item className="item">
           <TextField
-            className="input"
+            error={"email" in errors}
+            helperText={"email" in errors && errors.email}
+            className="textInput"
             color="secondary"
             variant="outlined"
             label="Email"
@@ -60,9 +77,11 @@ export default function SignUp() {
             onChange={(e) => handleChange(e)}
           ></TextField>
         </Grid>
-        <Grid item>
+        <Grid item className="item">
           <TextField
-            className="input"
+            error={"Password" in errors}
+            helperText={"Password" in errors && errors.Password}
+            className="textInput"
             color="secondary"
             variant="outlined"
             label="Password"
@@ -84,9 +103,11 @@ export default function SignUp() {
             }}
           ></TextField>
         </Grid>
-        <Grid item>
+        <Grid item className="item">
           <TextField
-            className="input"
+            error={"Password2" in errors}
+            helperText={"Password2" in errors && errors.Password2}
+            className="textInput"
             color="secondary"
             variant="outlined"
             label="Confirm Password"
@@ -108,9 +129,10 @@ export default function SignUp() {
             }}
           ></TextField>
         </Grid>
-        <Grid item>
+        <Grid item className="item">
           <Button
             variant="contained"
+            className="formButton"
             color="secondary"
             onClick={() => {
               dispatch(registerUser(formData, history));
@@ -119,9 +141,9 @@ export default function SignUp() {
             Sign Up
           </Button>
         </Grid>
-        <Grid item>
+        <Grid item className="item">
           <Typography>
-            already a user?
+            {"already a user?  "}
             <LinkElement
               component={Link}
               color="secondary"

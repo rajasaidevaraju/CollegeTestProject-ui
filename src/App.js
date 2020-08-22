@@ -3,9 +3,9 @@ import { useSelector, useDispatch } from "react-redux";
 import NavBarC from "./components/NavBarC/NavBarC";
 import GridBody from "./components/GridBody/GridBody";
 import Settings from "./components/Settings/Settings";
-import Login from "./components/Login/Login";
-import { green } from "@material-ui/core/colors";
-import Register from "./components/Register/Register";
+import Login from "./components/Authentication/Login";
+import ForgotPassword from "./components/Authentication/ForgotPassowrd";
+import Register from "./components/Authentication/Register";
 import TestPage from "./components/TestPage/TestPage";
 import ProtectedRoute from "./ProtectedRoute";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
@@ -14,6 +14,7 @@ import { ThemeProvider } from "@material-ui/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import jwt_decode from "jwt-decode";
 import setAuthToken from "./utils/setAuthToken";
+import { green } from "@material-ui/core/colors";
 import {
   setCurrentUser,
   logoutUser,
@@ -71,8 +72,9 @@ function App() {
             <ProtectedRoute exact path="/" component={GridBody} />
             <Route path="/Settings" component={Settings} />
             <Route path="/Login" component={Login} />
+            <Route path="/ForgotPassword" component={ForgotPassword} />
             <Route path="/Register" component={Register} />
-            <Route path="/TestPage/:id" component={TestPage} />
+            <ProtectedRoute path="/TestPage/:id" component={TestPage} />
           </Switch>
         </Router>
       </React.Fragment>

@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { useSelector, connect } from "react-redux";
 import { IconButton, InputAdornment } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { Typography, TextField, withStyles } from "@material-ui/core";

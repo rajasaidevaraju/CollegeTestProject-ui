@@ -38,7 +38,13 @@ const FeatureButtons = ({ createQuestion, saveTest, deleteTest, role }) => {
       </div>
     );
   } else {
-    return <div></div>;
+    return (
+      <div className="button_div">
+        <Button className="test_Button" variant="contained" color="secondary">
+          Submit Test
+        </Button>
+      </div>
+    );
   }
 };
 export default FeatureButtons;
