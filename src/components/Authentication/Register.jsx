@@ -11,15 +11,9 @@ import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
 import Typography from "@material-ui/core/Typography";
 import { registerUser, clearErrors } from "../redux/user/userActions";
 import { useDispatch, useSelector } from "react-redux";
+import { isEmpty, isPresent } from "../../utils/helper";
 import "./auth.css";
-function isEmpty(obj) {
-  for (var key in obj) {
-    if (obj.hasOwnProperty(key)) {
-      return false;
-    }
-  }
-  return true;
-}
+
 export default function SignUp() {
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setInput] = useState({
@@ -53,8 +47,8 @@ export default function SignUp() {
         </Grid>
         <Grid item className="item">
           <TextField
-            error={"name" in errors}
-            helperText={"name" in errors && errors.name}
+            error={isPresent(errors, "name")}
+            helperText={isPresent(errors, "name") && errors.name}
             className="textInput"
             color="secondary"
             variant="outlined"
@@ -66,8 +60,8 @@ export default function SignUp() {
         </Grid>
         <Grid item className="item">
           <TextField
-            error={"email" in errors}
-            helperText={"email" in errors && errors.email}
+            error={isPresent(errors, "email")}
+            helperText={isPresent(errors, "email") && errors.email}
             className="textInput"
             color="secondary"
             variant="outlined"
@@ -79,8 +73,8 @@ export default function SignUp() {
         </Grid>
         <Grid item className="item">
           <TextField
-            error={"Password" in errors}
-            helperText={"Password" in errors && errors.Password}
+            error={isPresent(errors, "password")}
+            helperText={isPresent(errors, "password") && errors.password}
             className="textInput"
             color="secondary"
             variant="outlined"
@@ -105,8 +99,8 @@ export default function SignUp() {
         </Grid>
         <Grid item className="item">
           <TextField
-            error={"Password2" in errors}
-            helperText={"Password2" in errors && errors.Password2}
+            error={isPresent(errors, "password2")}
+            helperText={isPresent(errors, "password2") && errors.password2}
             className="textInput"
             color="secondary"
             variant="outlined"

@@ -12,16 +12,8 @@ import Typography from "@material-ui/core/Typography";
 import { loginUser, clearErrors } from "../redux/user/userActions";
 import { useDispatch, useSelector } from "react-redux";
 import "./auth.css";
-import { useDebugValue } from "react";
+import { isEmpty, isPresent } from "../../utils/helper";
 
-function isEmpty(obj) {
-  for (var key in obj) {
-    if (obj.hasOwnProperty(key)) {
-      return false;
-    }
-  }
-  return true;
-}
 export default function SignIn() {
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setInput] = useState({
@@ -52,8 +44,8 @@ export default function SignIn() {
         </Grid>
         <Grid item className="item">
           <TextField
-            error={"email" in errors}
-            helperText={"email" in errors && errors.email}
+            error={isPresent(errors, "email")}
+            helperText={isPresent(errors, "email") && errors.email}
             className="textInput"
             color="secondary"
             variant="outlined"
@@ -65,8 +57,8 @@ export default function SignIn() {
         </Grid>
         <Grid item className="item">
           <TextField
-            error={"password" in errors}
-            helperText={"password" in errors && errors.password}
+            error={isPresent(errors, "password")}
+            helperText={isPresent(errors, "password") && errors.password}
             className="textInput"
             color="secondary"
             variant="outlined"

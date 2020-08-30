@@ -4,7 +4,7 @@ import NavBarC from "./components/NavBarC/NavBarC";
 import GridBody from "./components/GridBody/GridBody";
 import Settings from "./components/Settings/Settings";
 import Login from "./components/Authentication/Login";
-import ForgotPassword from "./components/Authentication/ForgotPassowrd";
+import ForgotPassword from "./components/Authentication/ForgotPassoword";
 import Register from "./components/Authentication/Register";
 import TestPage from "./components/TestPage/TestPage";
 import ProtectedRoute from "./ProtectedRoute";
@@ -72,7 +72,18 @@ function App() {
             <ProtectedRoute exact path="/" component={GridBody} />
             <Route path="/Settings" component={Settings} />
             <Route path="/Login" component={Login} />
-            <Route path="/ForgotPassword" component={ForgotPassword} />
+            <Route
+              path="/ForgotPassword"
+              render={(routeProps) => (
+                <ForgotPassword type="email" {...routeProps} />
+              )}
+            />
+            <Route
+              path="/code"
+              render={(routeProps) => (
+                <ForgotPassword type="code" {...routeProps} />
+              )}
+            />
             <Route path="/Register" component={Register} />
             <ProtectedRoute path="/TestPage/:id" component={TestPage} />
           </Switch>

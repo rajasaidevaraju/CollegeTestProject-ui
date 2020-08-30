@@ -1,58 +1,88 @@
 import axios from "axios";
 import setAuthToken from "./../../../utils/setAuthToken";
 import jwt_decode from "jwt-decode";
-
+import { isPresent } from "./../../../utils/helper";
 import {
   GET_ERRORS,
   SET_CURRENT_USER,
   USER_LOADING,
   CLEAR_ERRORS,
+  EMAIL_EXISTS,
+  SEND_VERIFICATION_EMAIL,
 } from "./userActionTypes";
 
 // Register User
 export const registerUser = (userData, history) => (dispatch) => {
   axios
-    .post("/api/users/register", userData)
+    .post("/users/register", userData)
     .then((res) => history.push("/Login")) // re-direct to login on successful register
-    .catch((err) =>
-      dispatch({
-        type: GET_ERRORS,
-        payload: err.response.data,
-      })
-    );
+    .catch((err) => dispatch(get_errors(err)));
 };
 
 // Login - get user token
 export const loginUser = (userData, history) => (dispatch) => {
   axios
-    .post("/api/users/login", userData)
+    .post("/users/login", userData)
     .then((res) => {
-      // Save to localStorage
       const { token } = res.data;
       localStorage.setItem("jwtToken", token);
-      // Set token to Auth header
+
       setAuthToken(token);
-      //token = token.replace("Bearer ", "");
-      // Decode token to get user data
+
       const decoded = jwt_decode(token);
 
-      // Set current user
       dispatch(setCurrentUser(decoded));
       history.push("/");
     })
     .catch((err) => {
-      if ("response" in err) {
-        dispatch({
-          type: GET_ERRORS,
-          payload: err.response.data,
-        });
-      } else {
-        dispatch({
-          type: GET_ERRORS,
-          payload: err,
-        });
+      if (
+        isPresent(err.response, "data") &&
+        isPresent(err.response.data, "isVerified") &&
+        !err.isVerified
+      ) {
+        history.push({ pathname: "/code?email=" + userData.email });
       }
+
+      dispatch(get_errors(err));
     });
+};
+
+export const forgotPassword = (email, history) => (dispatch) => {
+  axios
+    .get("/users/forgotPassword", { params: { email } })
+    .then((res) => {
+      history.push("/code");
+    })
+    .catch((err) => {
+      dispatch(get_errors(err));
+    });
+};
+
+export const sendVerificationEmail = (email) => (dispatch) => {
+  axios
+    .post("/users/sendVerificationEmail", { email })
+    .then((res) => {
+      console.log("VERIFIED");
+    })
+    .catch((err) => {
+      dispatch(get_errors(err));
+    });
+};
+const email_exists = () => {
+  return {
+    type: EMAIL_EXISTS,
+  };
+};
+
+const get_errors = (err) => {
+  if (isPresent(err, "response")) {
+    err = err.response.data;
+  }
+
+  return {
+    type: GET_ERRORS,
+    payload: err,
+  };
 };
 
 export const clearErrors = () => {
