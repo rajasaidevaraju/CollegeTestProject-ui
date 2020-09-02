@@ -79,7 +79,7 @@ function App() {
               )}
             />
             <Route
-              path="/code"
+              path="/code/:email"
               render={(routeProps) => (
                 <ForgotPassword type="code" {...routeProps} />
               )}

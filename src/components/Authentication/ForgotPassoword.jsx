@@ -13,18 +13,14 @@ import {
   forgotPassword,
   clearErrors,
   sendVerificationEmail,
+  verifyCode,
 } from "../redux/user/userActions";
 import { useSelector, useDispatch } from "react-redux";
 import { isEmpty, isPresent } from "../../utils/helper";
 import "./auth.css";
 
-function useQuery() {
-  return new URLSearchParams(useLocation().search);
-}
-export default function ForgotPassword({ type }) {
-  let query = useQuery();
-  const client_email = query.get("email");
-
+export default function ForgotPassword({ type, match }) {
+  const client_email = match.params.email;
   const [email, setEmail] = useState("");
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   let errors = useSelector((state) => state.error);
@@ -90,7 +86,7 @@ export default function ForgotPassword({ type }) {
                 variant="contained"
                 color="secondary"
                 onClick={() => {
-                  dispatch(forgotPassword(email, history));
+                  dispatch(forgotPassword(history));
                 }}
               >
                 Find Account
@@ -103,7 +99,7 @@ export default function ForgotPassword({ type }) {
                   variant="contained"
                   color="secondary"
                   onClick={() => {
-                    dispatch(forgotPassword(history));
+                    dispatch(sendVerificationEmail(client_email, history));
                   }}
                 >
                   Re-Send Email
@@ -114,7 +110,7 @@ export default function ForgotPassword({ type }) {
                   variant="contained"
                   color="secondary"
                   onClick={() => {
-                    dispatch(forgotPassword(history));
+                    dispatch(verifyCode(client_email, email));
                   }}
                 >
                   Submit Code

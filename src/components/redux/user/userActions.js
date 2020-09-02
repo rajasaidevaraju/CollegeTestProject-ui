@@ -24,7 +24,8 @@ export const loginUser = (userData, history) => (dispatch) => {
   axios
     .post("/users/login", userData)
     .then((res) => {
-      const { token } = res.data;
+      const { token } = res.data.result;
+      console.log(res.data.result.token);
       localStorage.setItem("jwtToken", token);
 
       setAuthToken(token);
@@ -40,7 +41,7 @@ export const loginUser = (userData, history) => (dispatch) => {
         isPresent(err.response.data, "isVerified") &&
         !err.isVerified
       ) {
-        history.push({ pathname: "/code?email=" + userData.email });
+        history.push({ pathname: "/code/" + userData.email });
       }
 
       dispatch(get_errors(err));
@@ -74,6 +75,16 @@ const email_exists = () => {
   };
 };
 
+export const verifyCode = (email, code) => (dispatch) => {
+  axios
+    .get("/users/verifyCode", { params: { email, code } })
+    .then((res) => {
+      //history.push("/Login");
+    })
+    .catch((err) => {
+      dispatch(get_errors(err));
+    });
+};
 const get_errors = (err) => {
   if (isPresent(err, "response")) {
     err = err.response.data;

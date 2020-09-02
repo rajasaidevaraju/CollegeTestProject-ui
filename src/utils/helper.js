@@ -8,5 +8,10 @@ export function isEmpty(obj) {
 }
 
 export function isPresent(obj, prop) {
-  return typeof obj === "object" && obj !== null && prop in obj;
+  return (
+    typeof obj === "object" &&
+    obj !== null &&
+    prop in obj &&
+    obj[prop] !== undefined
+  );
 }
