@@ -40,7 +40,7 @@ const TestPage = (props) => {
       setTestName(testDetails.testData.testName);
       setQuestions(Object.assign({}, testDetails.testData.questions));
     }
-  }, [testDetails]);
+  }, [testDetails, dispatch, loading]);
 
   const saveTest = () => {
     dispatch(save_test(id, questions, testName));

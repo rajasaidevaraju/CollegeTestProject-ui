@@ -27,6 +27,7 @@ export default function SignIn() {
     if (!isEmpty(errors)) {
       dispatch(clearErrors());
     }
+    // eslint-disable-next-line
   }, []);
   const history = useHistory();
   if (isAuthenticated) {
@@ -98,7 +99,6 @@ export default function SignIn() {
         <Grid item className="item">
           <Button
             component={Link}
-            className="formButton"
             to="/ForgotPassword"
             color="secondary"
             underline="none"
@@ -109,7 +109,6 @@ export default function SignIn() {
         </Grid>
         <Grid item>
           <Button
-            className="formButton"
             variant="contained"
             color="secondary"
             onClick={() => {

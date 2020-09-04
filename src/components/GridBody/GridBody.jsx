@@ -34,7 +34,6 @@ const GridBody = () => {
 
   const [testName, setTestName] = useState("");
   const testsData = useSelector((state) => state.data.testsData);
-  let loading = useSelector((state) => state.data.loading);
   const role = useSelector((state) => state.auth.user.role);
   const dispatch = useDispatch();
   const history = useHistory();
@@ -52,9 +51,7 @@ const GridBody = () => {
   };
 
   useEffect(() => {
-    if (loading) {
-      dispatch(fetchData());
-    }
+    dispatch(fetchData());
   }, [dispatch]);
 
   const getDate = (date) => {

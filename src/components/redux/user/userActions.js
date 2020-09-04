@@ -7,8 +7,6 @@ import {
   SET_CURRENT_USER,
   USER_LOADING,
   CLEAR_ERRORS,
-  EMAIL_EXISTS,
-  SEND_VERIFICATION_EMAIL,
 } from "./userActionTypes";
 
 // Register User
@@ -68,11 +66,6 @@ export const sendVerificationEmail = (email) => (dispatch) => {
     .catch((err) => {
       dispatch(set_errors(err));
     });
-};
-const email_exists = () => {
-  return {
-    type: EMAIL_EXISTS,
-  };
 };
 
 export const verifyCode = (email, code) => (dispatch) => {

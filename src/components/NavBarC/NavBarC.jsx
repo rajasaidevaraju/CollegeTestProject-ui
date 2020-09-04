@@ -5,7 +5,6 @@ import { toggle_theme } from "../redux/theme/themeActions";
 import { createStyles, makeStyles } from "@material-ui/core/styles";
 import DarkModeIconButton from "@material-ui/icons/Brightness3";
 import LightModeIconButton from "@material-ui/icons/BrightnessHigh";
-import AccountIconButton from "@material-ui/icons/AccountCircle";
 import SettingsIcon from "@material-ui/icons/Settings";
 import { logoutUser } from "./../redux/user/userActions";
 import {

@@ -1,13 +1,14 @@
 import React, { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { get_classes } from "../redux/class/classActions";
-import { Button, Typography, Card, CardContent } from "@material-ui/core";
 import ClassChips from "./ClassChips";
 import { makeStyles } from "@material-ui/core/styles";
 import "./Settings.css";
 const useStyles = makeStyles((theme) => ({
   root: {
     paddingTop: theme.spacing(8),
+    display: "flex",
+    justifyContent: "center",
   },
 }));
 
@@ -16,11 +17,12 @@ const Settings = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(get_classes());
+    // eslint-disable-next-line
   }, []);
-  // const data = useSelector((state) => state.data);
+
   return (
     <div className={classes.root}>
-      <ClassChips></ClassChips>
+      <ClassChips />
     </div>
   );
 };

@@ -1,28 +1,9 @@
-import React, { useEffect, useState } from "react";
-import {
-  DialogActions,
-  DialogTitle,
-  Dialog,
-  TextField,
-  Button,
-  makeStyles,
-} from "@material-ui/core";
+import React from "react";
+import { DialogActions, DialogTitle, Dialog, Button } from "@material-ui/core";
 import { delete_class } from "./../redux/class/classActions";
 import { useDispatch } from "react-redux";
-const useStyles = makeStyles((theme) => ({
-  textField: {
-    marginLeft: theme.spacing(3),
-    marginRight: theme.spacing(3),
-    [theme.breakpoints.up("sm")]: {
-      width: "500px",
-    },
-    [theme.breakpoints.down("sm")]: {
-      width: "260px",
-    },
-  },
-}));
+
 const InputDialog = ({ open, setOpen, classDetails }) => {
-  const classes = useStyles();
   const dispatch = useDispatch();
   const id = classDetails._id;
   const handleClose = (shouldDelete) => {

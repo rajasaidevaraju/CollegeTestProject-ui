@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
-import { useLocation } from "react-router-dom";
 
 import {
   TextField,
@@ -33,7 +32,8 @@ export default function ForgotPassword({ type, match }) {
     if (type === "code") {
       dispatch(sendVerificationEmail(client_email));
     }
-  }, [type]);
+    // eslint-disable-next-line
+  }, []);
   if (isAuthenticated) {
     history.push("/");
   }

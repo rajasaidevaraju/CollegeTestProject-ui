@@ -32,6 +32,7 @@ export default function SignUp() {
     if (!isEmpty(errors)) {
       dispatch(clearErrors());
     }
+    // eslint-disable-next-line
   }, []);
   const history = useHistory();
   if (isAuthenticated) {

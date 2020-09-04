@@ -21,7 +21,7 @@ const classReducer = (state = initialState, action) => {
     case REMOVE_CLASS:
       const del_id = action.payload;
       const newArray = state.classes.filter((value) => {
-        return value._id != del_id;
+        return value._id !== del_id;
       });
       state.classes = newArray;
       return state;

@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import Chip from "@material-ui/core/Chip";
 import Paper from "@material-ui/core/Paper";
 import InputDialog from "./InputDialog";
