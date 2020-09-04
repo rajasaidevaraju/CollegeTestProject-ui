@@ -4,6 +4,7 @@ import {
   SET_CLASSES,
   SET_CLASS_ERROR,
 } from "./classActionTypes";
+import { isPresent } from "./../../../utils/helper";
 import axios from "axios";
 export const get_classes = () => (dispatch) => {
   axios
@@ -29,11 +30,11 @@ export const create_class = (className) => (dispatch) => {
     });
 };
 
-export const delete_class = (classId, index) => (diapatch) => {
+export const delete_class = (classId) => (dispatch) => {
   axios
     .post("/class/deleteClass", { classId })
     .then((response) => {
-      dispatch(remove_class(index));
+      dispatch(remove_class(classId));
     })
     .catch((error) => {
       dispatch(set_errors(error));

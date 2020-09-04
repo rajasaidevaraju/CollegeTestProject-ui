@@ -13,13 +13,15 @@ const initialState = {
 const classReducer = (state = initialState, action) => {
   switch (action.type) {
     case ADD_CLASS:
-      state.classes.push(action.payload);
-      return state;
+      return {
+        ...state,
+        classes: [...state.classes, action.payload],
+      };
 
     case REMOVE_CLASS:
-      const del_index = action.payload;
-      const newArray = state.classes.filter((value, index) => {
-        return index != del_index;
+      const del_id = action.payload;
+      const newArray = state.classes.filter((value) => {
+        return value._id != del_id;
       });
       state.classes = newArray;
       return state;

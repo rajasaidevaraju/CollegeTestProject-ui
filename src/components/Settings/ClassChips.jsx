@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
+import { useDispatch, useSelector } from "react-redux";
 import Chip from "@material-ui/core/Chip";
 import Paper from "@material-ui/core/Paper";
 import InputDialog from "./InputDialog";
@@ -22,24 +23,10 @@ export default function ClassChips() {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [d_open, d_setOpen] = useState(false);
-  const [className, setClassName] = useState("");
-  const [chipData, setChipData] = React.useState([
-    { key: 0, label: "Angular" },
-    { key: 1, label: "jQuery" },
-    { key: 2, label: "Polymer" },
-    { key: 3, label: "React" },
-    { key: 4, label: "Vue.js" },
-    { key: 5, label: "Vue.js" },
-    { key: 6, label: "Vue.js" },
-    { key: 7, label: "Vue.js" },
-    { key: 8, label: "Vue.js" },
-  ]);
-
-  const handleDelete = (chipToDelete) => () => {
-    setChipData((chips) =>
-      chips.filter((chip) => chip.key !== chipToDelete.key)
-    );
-  };
+  const [classDetails, setClassDetails] = useState({});
+  const classesData = useSelector((state) => {
+    return state.classData.classes;
+  });
 
   return (
     <Paper component="ul" className={classes.root}>
@@ -47,20 +34,20 @@ export default function ClassChips() {
       <DeleteDialog
         open={d_open}
         setOpen={d_setOpen}
-        ClassName={className}
+        classDetails={classDetails}
       ></DeleteDialog>
-      {chipData.map((data) => {
+      {classesData.map((data, index) => {
         let icon;
 
         return (
-          <li key={data.key}>
+          <li key={data._id}>
             <Chip
               icon={icon}
               onDelete={() => {
-                setClassName(data.label);
+                setClassDetails(data);
                 d_setOpen(true);
               }}
-              label={data.label}
+              label={data.className}
               className={classes.chip}
             />
           </li>

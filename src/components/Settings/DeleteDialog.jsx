@@ -7,7 +7,8 @@ import {
   Button,
   makeStyles,
 } from "@material-ui/core";
-
+import { delete_class } from "./../redux/class/classActions";
+import { useDispatch } from "react-redux";
 const useStyles = makeStyles((theme) => ({
   textField: {
     marginLeft: theme.spacing(3),
@@ -20,9 +21,14 @@ const useStyles = makeStyles((theme) => ({
     },
   },
 }));
-const InputDialog = ({ open, setOpen, ClassName }) => {
+const InputDialog = ({ open, setOpen, classDetails }) => {
   const classes = useStyles();
-  const handleClose = () => {
+  const dispatch = useDispatch();
+  const id = classDetails._id;
+  const handleClose = (shouldDelete) => {
+    if (shouldDelete) {
+      dispatch(delete_class(id));
+    }
     setOpen(false);
   };
   return (

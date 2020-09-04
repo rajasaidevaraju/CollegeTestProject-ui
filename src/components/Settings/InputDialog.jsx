@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { create_class } from "./../redux/class/classActions";
 import {
   DialogActions,
   DialogTitle,
@@ -23,9 +25,10 @@ const useStyles = makeStyles((theme) => ({
 const InputDialog = ({ open, setOpen }) => {
   const classes = useStyles();
   const [className, setClassName] = useState("");
+  const dispatch = useDispatch();
   const handleClose = (className) => {
     if (className) {
-      console.log(className);
+      dispatch(create_class(className));
     }
     setClassName("");
     setOpen(false);
