@@ -3,7 +3,7 @@ import setAuthToken from "./../../../utils/setAuthToken";
 import jwt_decode from "jwt-decode";
 import { isPresent } from "./../../../utils/helper";
 import {
-  GET_ERRORS,
+  SET_ERRORS,
   SET_CURRENT_USER,
   USER_LOADING,
   CLEAR_ERRORS,
@@ -16,7 +16,7 @@ export const registerUser = (userData, history) => (dispatch) => {
   axios
     .post("/users/register", userData)
     .then((res) => history.push("/Login")) // re-direct to login on successful register
-    .catch((err) => dispatch(get_errors(err)));
+    .catch((err) => dispatch(set_errors(err)));
 };
 
 // Login - get user token
@@ -44,7 +44,7 @@ export const loginUser = (userData, history) => (dispatch) => {
         history.push({ pathname: "/code/" + userData.email });
       }
 
-      dispatch(get_errors(err));
+      dispatch(set_errors(err));
     });
 };
 
@@ -55,7 +55,7 @@ export const forgotPassword = (email, history) => (dispatch) => {
       history.push("/code");
     })
     .catch((err) => {
-      dispatch(get_errors(err));
+      dispatch(set_errors(err));
     });
 };
 
@@ -66,7 +66,7 @@ export const sendVerificationEmail = (email) => (dispatch) => {
       console.log("VERIFIED");
     })
     .catch((err) => {
-      dispatch(get_errors(err));
+      dispatch(set_errors(err));
     });
 };
 const email_exists = () => {
@@ -82,16 +82,16 @@ export const verifyCode = (email, code) => (dispatch) => {
       //history.push("/Login");
     })
     .catch((err) => {
-      dispatch(get_errors(err));
+      dispatch(set_errors(err));
     });
 };
-const get_errors = (err) => {
+const set_errors = (err) => {
   if (isPresent(err, "response")) {
     err = err.response.data;
   }
 
   return {
-    type: GET_ERRORS,
+    type: SET_ERRORS,
     payload: err,
   };
 };

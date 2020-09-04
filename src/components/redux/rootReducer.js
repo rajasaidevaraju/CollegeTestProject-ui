@@ -3,10 +3,11 @@ import themeReducer from "./theme/themeReducer";
 import dataReducer from "./data/dataReducer";
 import authReducer from "./user/userReducer";
 import errorReducer from "./user/errorReducer";
-
+import classReducer from "./class/classReducer";
 export default combineReducers({
   theme: themeReducer,
   data: dataReducer,
   auth: authReducer,
   error: errorReducer,
+  classData: classReducer,
 });

@@ -17,8 +17,8 @@ import "./GridBody.css";
 
 const useStyles = makeStyles((theme) => ({
   textField: {
-    marginLeft: theme.spacing(1),
-    marginRight: theme.spacing(1),
+    marginLeft: theme.spacing(3),
+    marginRight: theme.spacing(3),
     [theme.breakpoints.up("sm")]: {
       width: "500px",
     },
@@ -31,6 +31,7 @@ const useStyles = makeStyles((theme) => ({
 const GridBody = () => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
+
   const [testName, setTestName] = useState("");
   const testsData = useSelector((state) => state.data.testsData);
   let loading = useSelector((state) => state.data.loading);
@@ -81,7 +82,7 @@ const GridBody = () => {
           autoFocus
           autoComplete="off"
           id="testName"
-          label="test Name"
+          label="Test Name"
           type="text"
           value={testName}
           onChange={(e) => setTestName(e.target.value)}
