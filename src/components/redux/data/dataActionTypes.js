@@ -3,4 +3,6 @@ export const REQUEST_SUCCESS = "REQUEST_SUCCESS";
 export const REQUEST_FAILURE = "REQUEST_FAILURE";
 export const ADD_TEST = "ADD_TEST";
 export const DELETE_TEST = "DELETE_TEST";
-export const SAVE_TEST = "SAVE_TEST";
+export const SAVE_TEST_SUCCESS = "SAVE_TEST_SUCCESS";
+export const CLEAR_MESSAGE = "CLEAR_MESSAGE";
+export const CLEAR_ERROR = "CLEAR_ERROR";

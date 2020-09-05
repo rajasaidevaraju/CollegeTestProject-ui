@@ -1,16 +1,73 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import "./TestPage.css";
-import { Button } from "@material-ui/core";
-const FeatureButtons = ({ createQuestion, saveTest, deleteTest, role }) => {
+import { add_question } from "./../redux/data/testActions";
+import { save_test, delete_test } from "./../redux/data/dataActions";
+import {
+  Button,
+  Dialog,
+  DialogTitle,
+  DialogActions,
+  Snackbar,
+} from "@material-ui/core";
+import MuiAlert from "@material-ui/lab/Alert";
+import { useHistory } from "react-router-dom";
+
+const FeatureButtons = ({ testId, testData }) => {
+  const role = useSelector((state) => {
+    return state.auth.user.role;
+  });
+
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const [open, setOpen] = useState(false);
+
+  const handleClose = (shouldDelete) => {
+    if (shouldDelete) {
+      dispatch(delete_test(testId, history));
+    }
+    setOpen(false);
+  };
+
   if (role === "admin" || role === "educator") {
     return (
       <div className="button_div">
+        <Dialog
+          open={open}
+          onClose={() => {
+            handleClose(false);
+          }}
+          aria-labelledby="form-dialog-title"
+        >
+          <DialogTitle id="alert-dialog-title">
+            {"Do you want to delete the Test?"}
+          </DialogTitle>
+          <DialogActions>
+            <Button
+              onClick={() => {
+                handleClose(false);
+              }}
+              color="secondary"
+            >
+              No
+            </Button>
+            <Button
+              onClick={() => {
+                handleClose(true);
+              }}
+              color="secondary"
+            >
+              Yes
+            </Button>
+          </DialogActions>
+        </Dialog>
+
         <Button
           className="test_Button"
           variant="contained"
           color="secondary"
           onClick={() => {
-            createQuestion();
+            dispatch(add_question(testId));
           }}
         >
           add Question
@@ -20,7 +77,7 @@ const FeatureButtons = ({ createQuestion, saveTest, deleteTest, role }) => {
           variant="contained"
           color="secondary"
           onClick={() => {
-            saveTest();
+            dispatch(save_test(testData));
           }}
         >
           Save Test
@@ -30,7 +87,7 @@ const FeatureButtons = ({ createQuestion, saveTest, deleteTest, role }) => {
           variant="contained"
           color="secondary"
           onClick={() => {
-            deleteTest();
+            setOpen(true);
           }}
         >
           Delete Test

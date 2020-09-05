@@ -1,222 +1,74 @@
-import React, { useEffect, useState } from "react";
+import React, { Component } from "react";
 import "./TestPage.css";
-import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
-import { save_test, delete_test } from "./../redux/data/dataActions";
-import Question from "./Question";
-import Option from "./Option";
-import SelectElement from "./SelectElement";
 import FeatureButtons from "./FeatureButtons";
-import { fetchData } from "../redux/data/dataActions";
-import { useMediaQuery, Divider } from "@material-ui/core";
-import generateID from "./../../utils/generateID";
-import {
-  Paper,
-  Typography,
-  Button,
-  Dialog,
-  DialogTitle,
-  DialogActions,
-} from "@material-ui/core";
+import { connect } from "react-redux";
+import Question from "./Question";
+import { fetchData } from "./../redux/data/dataActions";
+import Feedback from "./Feedback";
+class TestPage extends Component {
+  shouldComponentUpdate(nextProps, nextState) {
+    let current_count = this.state.count;
+    let next_count = nextState.count;
 
-const TestPage = (props) => {
-  const id = props.match.params.id;
-  const dispatch = useDispatch();
-
-  let testDetails = useSelector((state) => state.data.testsData[id]);
-  const role = useSelector((state) => state.auth.user.role);
-  let loading = useSelector((state) => state.data.loading);
-  const mobile = useMediaQuery("(max-width:600px)");
-  const [questions, setQuestions] = useState({});
-  const [testName, setTestName] = useState("");
-  const [open, setOpen] = useState(false);
-  const history = useHistory();
-  useEffect(() => {
-    if (loading) {
-      dispatch(fetchData());
-    }
-
-    if (testDetails) {
-      setTestName(testDetails.testData.testName);
-      setQuestions(Object.assign({}, testDetails.testData.questions));
-    }
-  }, [testDetails, dispatch, loading]);
-
-  const saveTest = () => {
-    dispatch(save_test(id, questions, testName));
-  };
-
-  const createQuestion = () => {
-    const new_key = generateID();
-    let newQuestionObj = {};
-
-    for (const [key, value] of Object.entries(questions)) {
-      newQuestionObj[key] = value;
-    }
-    newQuestionObj[new_key] = {
-      questionName: "",
-      options: {},
-      type: "singleOption",
-      answers: [],
-    };
-    setQuestions(newQuestionObj);
-  };
-
-  const deleteQuestion = (id) => {
-    delete questions[id];
-    setQuestions({ ...questions });
-  };
-
-  const setQuestionType = (id, type) => {
-    questions[id].type = type;
-    setQuestions({ ...questions });
-  };
-
-  const setQuestionName = (value, id) => {
-    questions[id].questionName = value;
-    setQuestions({ ...questions });
-  };
-
-  const selectOption = (type, question_id, option_id, event) => {
-    if (type === "singleOption") {
-      questions[question_id].answers = [option_id];
-      setQuestions({ ...questions });
-    } else {
-      if (event.target.checked) {
-        let newArray = questions[question_id].answers.map((item) => item);
-        newArray.push(option_id);
-        questions[question_id].answers = newArray;
-      } else {
-        const newArray = questions[question_id].answers.filter(
-          (item) => item !== option_id
-        );
-        questions[question_id].answers = newArray;
-      }
-      setQuestions({ ...questions });
-    }
-  };
-  const setOptionValue = (value, question_id, option_id) => {
-    questions[question_id].options[option_id] = value;
-    setQuestions({ ...questions });
-  };
-
-  const addOption = (id) => {
-    const new_Key = generateID();
-    if (!questions[id].options) {
-      questions[id].options = {};
-    }
-    questions[id].options[new_Key] = "";
-    setQuestions({ ...questions });
-  };
-
-  const deleteOption = (question_id, option_id) => {
-    delete questions[question_id].options[option_id];
-    setQuestions({ ...questions });
-  };
-  const deleteTest = () => {
-    setOpen(true);
-  };
-
-  const handleClose = (shouldDelete) => {
-    if (shouldDelete) {
-      dispatch(delete_test(id, history));
-    }
-    setOpen(false);
-  };
-
-  let variant = "h4";
-  if (mobile) {
-    variant = "h6";
+    return current_count !== next_count;
   }
 
-  if (!loading && testDetails !== undefined) {
+  static getDerivedStateFromProps(props, state) {
+    let testData = props.testData;
+    if (testData && testData.questions) {
+      return { count: Object.keys(testData.questions).length };
+    }
+    return { count: 0 };
+  }
+  constructor(props) {
+    super(props);
+    this.state = { count: 0 };
+  }
+
+  componentDidMount() {
+    if (!this.props.testData) {
+      this.props.fetchData();
+    }
+    return {};
+  }
+  render() {
+    const testId = this.props.match.params.id;
+    let question_keys = [];
+
+    if (this.props.testData && this.props.testData.questions) {
+      question_keys = Object.keys(this.props.testData.questions);
+    }
+
     return (
       <div className="test">
-        <Dialog
-          open={open}
-          onClose={() => {
-            handleClose(false);
-          }}
-          aria-labelledby="form-dialog-title"
-        >
-          <DialogTitle id="alert-dialog-title">
-            {"Do you want to delete the Test?"}
-          </DialogTitle>
-          <DialogActions>
-            <Button
-              onClick={() => {
-                handleClose(false);
-              }}
-              color="secondary"
-            >
-              No
-            </Button>
-            <Button
-              onClick={() => {
-                handleClose(true);
-              }}
-              color="secondary"
-            >
-              Yes
-            </Button>
-          </DialogActions>
-        </Dialog>
-        <Paper className="paper">
-          <Typography variant={variant}>Test Page of {testName}</Typography>
-          {Object.keys(questions).map((key, i) => {
-            return (
-              <div key={key + "div"} className="question">
-                <Question
-                  key={key}
-                  questionKey={key}
-                  value={questions[key].questionName}
-                  setQuestionName={setQuestionName}
-                  addOption={addOption}
-                  deleteQuestion={deleteQuestion}
-                  setQuestionType={setQuestionType}
-                  i={i}
-                  role={role}
-                ></Question>
-                {questions[key].options &&
-                  Object.keys(questions[key].options).map((optionKey, j) => {
-                    return (
-                      <div key={optionKey + "div"} className="optionDiv">
-                        <SelectElement
-                          type={questions[key].type}
-                          questionKey={key}
-                          optionKey={optionKey}
-                          selectOption={selectOption}
-                          answersArray={questions[key].answers}
-                          role={role}
-                        ></SelectElement>
-                        <Option
-                          j={j}
-                          key={optionKey}
-                          questionKey={key}
-                          optionKey={optionKey}
-                          value={questions[key].options[optionKey]}
-                          deleteOption={deleteOption}
-                          setOptionValue={setOptionValue}
-                          role={role}
-                        ></Option>
-                      </div>
-                    );
-                  })}
-                <Divider className="divider" variant="fullWidth" />
-              </div>
-            );
-          })}
-          <FeatureButtons
-            createQuestion={createQuestion}
-            saveTest={saveTest}
-            deleteTest={deleteTest}
-            role={role}
-          ></FeatureButtons>
-        </Paper>
+        {question_keys.map((questionKey, index) => {
+          return (
+            <Question
+              key={questionKey}
+              testId={testId}
+              questionId={questionKey}
+              index={index}
+            />
+          );
+        })}
+
+        <FeatureButtons testId={testId} testData={this.props.testData} />
+        <Feedback />
       </div>
     );
   }
-  return <div></div>;
+}
+
+const mapStateToProps = (state, ownProps) => {
+  const id = ownProps.match.params.id;
+  return { testData: state.data.testsData[id] };
 };
 
-export default TestPage;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    fetchData: () => {
+      dispatch(fetchData());
+    },
+  };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(TestPage);

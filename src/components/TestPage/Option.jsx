@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { IconButton, InputAdornment } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
+import { connect } from "react-redux";
+import { delete_option, set_option } from "./../redux/data/testActions";
 import { Typography, TextField, withStyles } from "@material-ui/core";
 const styles = (theme) => ({
   option: {
@@ -20,18 +22,20 @@ const styles = (theme) => ({
 class Option extends Component {
   shouldComponentUpdate(nextProps, nextState) {
     return !(
-      nextProps.value === this.props.value && this.props.j === nextProps.j
+      nextProps.optionText === this.props.optionText &&
+      this.props.index === nextProps.index
     );
   }
   render() {
     const {
       classes,
-      questionKey,
-      optionKey,
-      value,
+      testId,
+      questionId,
+      optionId,
+      optionText,
       deleteOption,
-      setOptionValue,
-      j,
+      setOptionText,
+      index,
       role,
     } = this.props;
 
@@ -42,38 +46,63 @@ class Option extends Component {
           display="inline"
           className={classes.optionText}
         >
-          {value}
+          {optionText}
         </Typography>
       );
     }
     return (
       <TextField
         className={classes.option}
-        key={optionKey}
-        value={value}
+        key={optionId}
+        value={optionText}
         multiline={true}
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">
-              {(j + 10).toString(36) + " )"}
+              {(index + 10).toString(36) + " )"}
             </InputAdornment>
           ),
           endAdornment: (
             <InputAdornment position="end">
               <IconButton
                 onClick={() => {
-                  deleteOption(questionKey, optionKey);
+                  deleteOption(testId, questionId, optionId);
                 }}
               >
-                <DeleteIcon key={optionKey + "delete"}></DeleteIcon>
+                <DeleteIcon key={optionId + "delete"}></DeleteIcon>
               </IconButton>
             </InputAdornment>
           ),
         }}
-        onChange={(e) => setOptionValue(e.target.value, questionKey, optionKey)}
+        onChange={(e) =>
+          setOptionText(testId, questionId, optionId, e.target.value)
+        }
       ></TextField>
     );
   }
 }
+const mapStateToProps = (state, ownProps) => {
+  const id = ownProps.testId;
+  const questionId = ownProps.questionId;
+  const optionId = ownProps.optionId;
+  return {
+    optionText:
+      state.data.testsData[id].questions[questionId].options[optionId],
+    role: state.auth.user.role,
+  };
+};
 
-export default withStyles(styles, { withTheme: true })(Option);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    deleteOption: (testId, questionId, optionId) => {
+      dispatch(delete_option(testId, questionId, optionId));
+    },
+    setOptionText: (testId, questionId, optionId, text) => {
+      dispatch(set_option(testId, questionId, optionId, text));
+    },
+  };
+};
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withStyles(styles, { withTheme: true })(Option));

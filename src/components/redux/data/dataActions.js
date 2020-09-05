@@ -4,7 +4,9 @@ import {
   REQUEST_FAILURE,
   ADD_TEST,
   DELETE_TEST,
-  SAVE_TEST,
+  CLEAR_ERROR,
+  CLEAR_MESSAGE,
+  SAVE_TEST_SUCCESS,
 } from "./dataActionTypes";
 
 import axios from "axios";
@@ -40,19 +42,16 @@ export const create_test = (test_id, testName) => {
   };
 };
 
-export const save_test = (test_id, questions, testName) => {
+export const save_test = (testData) => {
   return (dispatch) => {
     dispatch(request_data());
-    const data = { testName: testName, _id: test_id, questions: questions };
 
     axios
       .post("/test/saveTest", {
-        _id: test_id,
-        questions: questions,
-        testName: testName,
+        testData,
       })
       .then((response) => {
-        dispatch(save_test_redux(data));
+        dispatch(save_test_redux());
       })
       .catch((error) => {
         dispatch(request_failure(error.message));
@@ -60,14 +59,14 @@ export const save_test = (test_id, questions, testName) => {
   };
 };
 
-export const delete_test = (test_id, history) => {
+export const delete_test = (testId, history) => {
   return (dispatch) => {
     dispatch(request_data());
-    const data = { _id: test_id };
+    const data = { _id: testId };
 
     axios
       .post("/test/deleteTest", {
-        _id: test_id,
+        _id: testId,
       })
       .then((response) => {
         history.push("/");
@@ -85,13 +84,23 @@ const delete_test_redux = (data) => {
     payload: data,
   };
 };
-const save_test_redux = (data) => {
+const save_test_redux = () => {
   return {
-    type: SAVE_TEST,
-    payload: data,
+    type: SAVE_TEST_SUCCESS,
   };
 };
 
+export const clear_message = () => {
+  return {
+    type: CLEAR_MESSAGE,
+  };
+};
+
+export const clear_error = () => {
+  return {
+    type: CLEAR_ERROR,
+  };
+};
 const add_test = (data) => {
   return {
     type: ADD_TEST,

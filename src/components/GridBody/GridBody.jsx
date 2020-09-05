@@ -131,7 +131,7 @@ const GridBody = () => {
             }}
           >
             <Typography key={key + "h5"} variant="h5">
-              {testsData[key].testData.testName}
+              {testsData[key].testName}
             </Typography>
             <Typography key={key + "p"}>
               Created at:{getDate(testsData[key].createdAt)}

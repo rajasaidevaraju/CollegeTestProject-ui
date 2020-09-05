@@ -1,0 +1,8 @@
+export const ADD_OPTION = "ADD_OPTION";
+export const DELETE_OPTION = "DELETE_OPTION";
+export const SET_OPTION = "SET_OPTION";
+export const ADD_QUESTION = "ADD_QUESTION";
+export const DELETE_QUESTION = "DELETE_QUESTION";
+export const SET_QUESTION = "SET_QUESTION";
+export const SET_QUESTION_TYPE = "SET_QUESTION_TYPE";
+export const SELECT_OPTION = "SELECT_OPTION";
