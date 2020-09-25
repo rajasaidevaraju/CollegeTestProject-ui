@@ -4,11 +4,13 @@ import { get_classes } from "../redux/class/classActions";
 import ClassChips from "./ClassChips";
 import { makeStyles } from "@material-ui/core/styles";
 import "./Settings.css";
+import UserTable from "./userTable";
 const useStyles = makeStyles((theme) => ({
   root: {
     paddingTop: theme.spacing(8),
     display: "flex",
     justifyContent: "center",
+    flexDirection: "column",
   },
 }));
 
@@ -23,6 +25,7 @@ const Settings = () => {
   return (
     <div className={classes.root}>
       <ClassChips />
+      <UserTable />
     </div>
   );
 };

@@ -1,16 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import "./TestPage.css";
 import { add_question } from "./../redux/data/testActions";
 import { save_test, delete_test } from "./../redux/data/dataActions";
-import {
-  Button,
-  Dialog,
-  DialogTitle,
-  DialogActions,
-  Snackbar,
-} from "@material-ui/core";
-import MuiAlert from "@material-ui/lab/Alert";
+import { Button, Dialog, DialogTitle, DialogActions } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
 
 const FeatureButtons = ({ testId, testData }) => {

@@ -1,12 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { clear_error, clear_message } from "./../redux/data/dataActions";
+import { useSelector } from "react-redux";
 import { Snackbar } from "@material-ui/core";
-import MuiAlert from "@material-ui/lab/Alert";
-import { useHistory } from "react-router-dom";
 
 const FeatureButtons = ({ testId, testData }) => {
-  const dispatch = useDispatch();
   const [popOpen, setPopOpen] = useState({
     open: false,
     message: "",
